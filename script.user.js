@@ -19,17 +19,17 @@
     };
   };
 
-  const storedMode = GM_getValue("deepseek_mode", null);
-  const storedSearch = GM_getValue("deepseek_search", null);
-
-  if (storedMode) {
-    console.log("上次保存的模式:", storedMode);
-  }
-  if (storedSearch !== null) {
-    console.log("上次保存的搜索状态:", storedSearch ? "已开启" : "已关闭");
-  }
-
   function restoreState() {
+    const storedMode = GM_getValue("deepseek_mode", null);
+    const storedSearch = GM_getValue("deepseek_search", null);
+
+    if (storedMode) {
+      console.log("上次保存的模式:", storedMode);
+    }
+    if (storedSearch !== null) {
+      console.log("上次保存的搜索状态:", storedSearch ? "已开启" : "已关闭");
+    }
+
     if (storedMode) {
       const targetRadio = document.querySelector(
         `div[role="radio"][data-model-type="${storedMode}"]`,
@@ -45,12 +45,12 @@
       const searchBtn = Array.from(
         document.querySelectorAll(".ds-toggle-button"),
       ).find((btn) => btn.textContent.includes("智能搜索"));
-      const isCurrentlyActive = searchBtn.classList.contains(
-        "ds-toggle-button--selected",
-      );
       if (!searchBtn) {
         return;
       }
+      const isCurrentlyActive = searchBtn.classList.contains(
+        "ds-toggle-button--selected",
+      );
       if (isCurrentlyActive !== storedSearch) {
         searchBtn.click();
         console.log("已自动还原搜索状态:", storedSearch ? "已开启" : "已关闭");
