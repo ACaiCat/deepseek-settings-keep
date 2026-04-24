@@ -50,15 +50,21 @@
         console.log("已自动还原搜索状态:", storedSearch ? "已开启" : "已关闭");
       }
     }
+    
+  }
+
+  function initialize() {
+    restoreState();
     registerClickListener();
   }
 
+
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", () => {
-      setTimeout(restoreState, 500);
+      setTimeout(initialize, 500);
     });
   } else {
-    setTimeout(restoreState, 500);
+    setTimeout(initialize, 500);
   }
 
   function registerClickListener() {
@@ -108,4 +114,15 @@
     GM_setValue("deepseek_search", isActive);
     console.log("智能搜索状态:", isActive ? "已开启" : "已关闭");
   }
+
+  let lastUrl = location.href;
+  const pushState = history.pushState;
+  history.pushState = function () {
+    pushState.apply(this, arguments);
+    const newUrl = location.href;
+    if (lastUrl.match(/\/a\/.+/) && newUrl === "https://chat.deepseek.com/") {
+      restoreState();
+    }
+    lastUrl = newUrl;
+  };
 })();
