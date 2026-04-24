@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         DeepSeek设置持久化
 // @namespace    http://tampermonkey.net/
-// @version      1.0
+// @version      1.1
 // @description  持久化DeepSeek网页版的模式和智能搜索设置
 // @author       ACaiCat
 // @match        https://chat.deepseek.com/*
