@@ -124,9 +124,23 @@
   history.pushState = function () {
     pushState.apply(this, arguments);
     const newUrl = location.href;
-    if (lastUrl.match(/\/a\/.+/) && newUrl === "https://chat.deepseek.com/") {
-      restoreState();
+    if (
+      lastUrl.includes("/a/") &&
+      (newUrl === "https://chat.deepseek.com/" ||
+        newUrl === "https://chat.deepseek.com")
+    ) {
+      console.log("历史对话返回首页");
+      setTimeout(restoreState, 500);
     }
     lastUrl = newUrl;
   };
+
+  window.addEventListener("popstate", () => {
+    const newUrl = location.href;
+    if (lastUrl.match(/\/a\/.+/) && newUrl.match(/^https:\/\/chat\.deepseek\.com\/?$/)) {
+      setTimeout(restoreState, 500);
+    }
+    lastUrl = newUrl;
+  });
+
 })();
