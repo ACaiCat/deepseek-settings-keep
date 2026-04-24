@@ -34,6 +34,9 @@
       const targetRadio = document.querySelector(
         `div[role="radio"][data-model-type="${storedMode}"]`,
       );
+      if (!targetRadio) {
+        return;
+      }
       targetRadio.click();
       console.log("已自动还原模式:", storedMode);
     }
@@ -45,19 +48,20 @@
       const isCurrentlyActive = searchBtn.classList.contains(
         "ds-toggle-button--selected",
       );
+      if (!searchBtn) {
+        return;
+      }
       if (isCurrentlyActive !== storedSearch) {
         searchBtn.click();
         console.log("已自动还原搜索状态:", storedSearch ? "已开启" : "已关闭");
       }
     }
-    
   }
 
   function initialize() {
     restoreState();
     registerClickListener();
   }
-
 
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", () => {
