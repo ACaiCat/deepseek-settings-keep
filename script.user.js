@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         DeepSeek设置持久化
 // @namespace    http://tampermonkey.net/
-// @version      1.1
+// @version      1.2
 // @description  持久化DeepSeek网页版的模式和智能搜索设置
 // @author       ACaiCat
 // @match        https://chat.deepseek.com/*
@@ -11,13 +11,6 @@
 
 (function () {
   "use strict";
-
-  window.getDeepSeekState = function () {
-    return {
-      mode: GM_getValue("deepseek_mode", "unknown"),
-      search: GM_getValue("deepseek_search", false),
-    };
-  };
 
   function restoreState() {
     const storedMode = GM_getValue("deepseek_mode", null);
@@ -137,10 +130,19 @@
 
   window.addEventListener("popstate", () => {
     const newUrl = location.href;
-    if (lastUrl.match(/\/a\/.+/) && newUrl.match(/^https:\/\/chat\.deepseek\.com\/?$/)) {
+    if (
+      lastUrl.match(/\/a\/.+/) &&
+      newUrl.match(/^https:\/\/chat\.deepseek\.com\/?$/)
+    ) {
       setTimeout(restoreState, 500);
     }
     lastUrl = newUrl;
   });
 
+  window.getDeepSeekState = function () {
+    return {
+      mode: GM_getValue("deepseek_mode", "unknown"),
+      search: GM_getValue("deepseek_search", false),
+    };
+  };
 })();
